@@ -25,6 +25,25 @@ export const BoardService = {
         return snapshot.docs.map(doc => doc.data());
     },
 
+    async searchUserBoards(userId, query) {
+        const userBoards = await this.getUserBoards(userId);
+        if (!query) {
+            return userBoards;
+        }
+
+        const lowerCaseQuery = query.toLowerCase();
+
+        return userBoards.filter(board => {
+            const boardName = board.boardName ? board.boardName.toLowerCase() : '';
+            const classCode = board.classCode ? board.classCode.toLowerCase() : '';
+            const tags = board.tags ? board.tags.toLowerCase() : '';
+
+            return boardName.includes(lowerCaseQuery) ||
+                   classCode.includes(lowerCaseQuery) ||
+                   tags.includes(lowerCaseQuery);
+        });
+    },
+
     async deleteBoard (boardId, userId) {
         const boardRef = db.collection('boards').doc(boardId);
         const board = await boardRef.get();
