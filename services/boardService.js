@@ -4,13 +4,16 @@ export const BoardService = {
     async createBoard (userId, boardData) {
         const boardRef = db.collection('boards').doc();
         const board = {
-            boardId: boardRef.id,
-            userId: userId,
-            boardName: boardData.boardName,
-            classCode: boardData.classCode,
-            tags: boardData.tags,
-            createdAt: new Date(),
-            updatedAt: new Date()
+          boardId: boardRef.id,
+          userId: userId,
+          boardName: boardData.boardName,
+          classCode: boardData.classCode,
+          tags: boardData.tags,
+          createdAt: new Date(),
+          updatedAt: new Date(),
+          drawing: [], // <-- add this
+          writing: [], // <-- add this
+          writingWindow: null // <-- add this
         };
         await boardRef.set(board);
         return board;
